@@ -13,7 +13,22 @@ const Note = ({ note, handleClick }) => {
 
 const Notes = () => {
   const dispatch = useDispatch()
-  const notes = useSelector(state => state)
+
+  // const notes = useSelector(state => state) //useSelector receives a function as a
+  //  parameter. The function either searches for or selects data from the redux-store. 
+  //  Here we need all of the notes, so our selector function returns the whole state:
+
+
+  // const notes = useSelector(state => state.notes)
+  const notes = useSelector(({ filter, notes }) => { //destructuring 'state' parameter into {filter,notes}
+    if ( filter === 'ALL' ) {
+      return notes
+    }
+    return filter  === 'IMPORTANT' 
+      ? notes.filter(note => note.important)
+      : notes.filter(note => !note.important)
+  })
+
 
   return(
     <ul>
